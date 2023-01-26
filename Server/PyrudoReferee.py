@@ -14,7 +14,47 @@ class PyrudoReferee:
 
         self.server_socket = server_socket
         return
-
+    
+    def count_dices(self, value):
+        #Count how many dices are of the concerned value
+        count = 0
+        for i in range(self.players_alive):
+            if value == 1 :
+                count += self.players[i].dict[1]
+            else :
+                count += self.players[i].dict[value] + self.players[i].dict[1]
+        return count
+    
+    
+    def check_message(self,message,player):
+        if message == "Dead":
+            del self.players_alive[player]
+        elif message == "Palifico!":
+            self.is_palifico = True
+    
+    def check_dodo(self, current_bid, current_player, last_player):
+        count = self.count_dices(current_bid[1])
+        
+       #Check who loses the round
+        if count < current_bid[0]:
+            message = self.players[last_player].lose_round() 
+            self.check_message(message, last_player)
+        else :
+            message = self.players[current_player].lose_round()
+            self.check_message(message,current_player)
+            
+        
+    def check_calza(self,current_bid, current_player):
+        count = self.count_dices(current_bid[1])
+        
+        #Check who loses the round
+        if count == current_bid[0]:
+            self.players[current_player].win_calza()
+        else : 
+            message = self.players[current_player].lose_round()
+            self.check_message(message,current_player)
+        
+    
     def play_game(self) -> None:
         # Initialize players and variables
         players_alive = []
@@ -27,7 +67,7 @@ class PyrudoReferee:
         while not is_game_finished:
             # Initialize the next round
             current_player_index = random.randrange(len(players_alive))
-            current_bid = (0, 0)
+            current_bid = [0, 0]
             is_round_finished = False
             is_palifico = False
 
