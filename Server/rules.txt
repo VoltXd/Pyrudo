@@ -1,0 +1,36 @@
+Bienvenue dans Pyrudo, le jeu qui vous fera des noeuds au cerveau !
+
+
+Nous allons ici vous rappeler brièvement les règles du jeu.
+
+
+Le but du jeu est d’être le dernier joueur à posséder un ou plusieurs dés.
+
+Au début de la manche, vous allez lancer vos dés. La valeur 1 s'appelle Paco ici, c'est le joker du jeu.
+
+Le premier joueur doit annoncer tout haut un nombre de dés et une valeur de dé et, en fonction de son propre tirage, et de ce qu’il pense y avoir chez les autres joueurs. Il doit faire une approximation aussi proche de la réalité que possible mais peut, bien entendu, bluffer. Les joueurs enchaînent ensuite les enchères et parient sur le nombre de dés d’une même valeur présents pendant cette manche..
+
+
+Après la première enchère, à votre tour, vous pouvez :
+- surenchérir : même valeur mais plus de dés ou plus grande valeur mais même nombre de dés.
+- Dodo : si vous pensez qu'il y a strictement moins de dés que l'enchère proposée, on vérifie alors. Si vous avez raison, le dernier joueur perd un dé, sinon c'est vous qui en perdez un !
+- Calza : si vous pensez qu'il y a EXACTEMENT le nombre de dés proposés dans l'enchère, on vérifie alors. Si vous avez raison, vous remportez un dé (dans la limite de 5 par personne), sinon vous en perdez un !
+
+
+Précision sur les Pacos : lors d'un décompte (Dodo, Calza) pour une valeur de dé différente de Paco, les Paco comptent. Par exemple, si il y a 4 dés 2 et 1 Paco en jeu, on comptera 5 dés 2 !
+Précision sur les enchères : - si vous passez d'une valeur quelconque à Paco, vous devez au moins proposer un nombre de dé supérieur ou égal au précédent divisé par 2 (arrondi à l'entier supérieur). Ex : Si l'enchère précédente était de 5 dés 5, vous devez proposer au moins 5/2 = 2.5 donc 3 Pacos !
+                             - si vous passez de Paco à une valeur quelconque, vous devez au moins proposer un nombre de dé supérieur ou égal à 2 fois le nombre précédent + 1. Ex : Si l'enchère précédente était de 3 Pacos, vous devez au moins proposer 2*3 + 1 = 7 dés d'une valeur quelconque !
+Palifico : lorsqu'un joueur ne possède plus qu'un dé pour la première fois, on annonce Palifico ! Cette manche, les joueurs ne pourront pas changer la valeur du dé, ils ne pourront que surenchérir sur le nombre de dés !
+
+
+
+
+
+
+
+
+
+
+
+
+
