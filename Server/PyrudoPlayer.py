@@ -1,6 +1,5 @@
 import socket
 import random
-import time
 
 class PyrudoPlayer:
 
@@ -31,7 +30,7 @@ class PyrudoPlayer:
             roll_value = random.randrange(0, 6)
             self.dices[roll_value] += 1
         str_number_of_dice = "Il te reste {} dés ! \n".format(self.number_of_dices)
-        str_dices = "Tu as tiré {} Paco(s), {} fois 2, {} fois 3, {} fois 4, {} fois 5, et {} fois 6. Bonne chance ! \n".format(
+        str_dices = "Tu as tiré :\n{} Paco(s)\n{} fois 2\n{} fois 3\n{} fois 4\n{} fois 5\n{} fois 6\nBonne chance !\n".format(
             self.dices[0], self.dices[1], self.dices[2], self.dices[3], self.dices[4], self.dices[5])
         self.send_update(str_number_of_dice)
         self.send_update(str_dices)
@@ -56,11 +55,9 @@ class PyrudoPlayer:
     def send_update(self, update: str) -> None:
         # Send updates about the current game's state
         self.player_socket.send(("Update: " + update).encode("utf-8"))
-        time.sleep(1)
         return
 
     def send_message(self, message: str) -> None:
         # Send a message for the client to print
         self.player_socket.send(("Msg: " + message).encode("utf-8"))
-        time.sleep(1)
         return

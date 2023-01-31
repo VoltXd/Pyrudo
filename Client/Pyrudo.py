@@ -15,8 +15,10 @@ while game_running :
     print(msg)
     messages = msg.split("\n")
     for message in messages :
-        if message == "Msg: À ton tour !" or msg == "Msg: Veuillez choisir une action possible":
+        if message == "Msg: À ton tour !" or message == "Msg: Veuillez choisir une action possible":
             client_input = input("Que souhaites-tu faire ? (Overbid:nb,valeur_de, Dodo, Calza) : ")
+            if client_input == "":
+                client_input = "d"
             server_socket.send(client_input.encode("utf-8"))
 
 

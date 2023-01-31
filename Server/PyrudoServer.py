@@ -2,7 +2,7 @@ import socket
 import PyrudoReferee
 import time
 
-CONNECTION_TIMEOUT = 60
+CONNECTION_TIMEOUT = 10
 MAX_PLAYERS = 6
 
 number_of_players = 0
