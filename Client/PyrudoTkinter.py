@@ -12,11 +12,11 @@ class PyrudoClientTkinter(tk.Tk):
 
         # Frames
         connection_frame = tk.LabelFrame(self, text="Connexion", borderwidth=2, relief=tk.GROOVE)
-        connection_frame.pack(side=tk.TOP, padx=10, fill="y")
+        connection_frame.pack(side=tk.TOP, padx=10, pady=10, fill="x")
         game_frame = tk.LabelFrame(self, text="Jeu", borderwidth=2, relief=tk.GROOVE)
-        game_frame.pack(side=tk.TOP, padx=10, fill="y")
+        game_frame.pack(side=tk.TOP, padx=10, fill="both", expand="yes")
         choice_frame = tk.LabelFrame(self, text="Choix", borderwidth=2, relief=tk.GROOVE)
-        choice_frame.pack(side=tk.TOP, padx=10, fill="y")
+        choice_frame.pack(side=tk.TOP, padx=10, fill="x")
         
         # ----- Connection frame -----
         # Entries
@@ -52,8 +52,23 @@ class PyrudoClientTkinter(tk.Tk):
         self.button_connection.pack(side=tk.RIGHT, padx=20, pady=2)
         
         # ----- Game frame -----
+        self.canvas = tk.Canvas(game_frame, background="white")
+        self.canvas.pack(fill="both", expand="yes")
 
         # ----- Choice frame -----
+        self.spinbox_number_of_dice = tk.Spinbox(choice_frame)
+        self.list_dice_face = tk.Listbox(choice_frame)
+        self.button_overbid = tk.Button(choice_frame, text="Surenchérir", state="disabled")
+        self.button_dodo = tk.Button(choice_frame, text="Dodo", state="disabled")
+        self.button_calza = tk.Button(choice_frame, text="Calza", state="disabled")
+
+        tk.Label(choice_frame, text="Nombre : ").pack(side=tk.LEFT)
+        self.spinbox_number_of_dice.pack(side=tk.LEFT)
+        tk.Label(choice_frame, text="Face : ").pack(side=tk.LEFT)
+        self.list_dice_face.pack(side=tk.LEFT)
+        self.button_overbid.pack(side=tk.LEFT, padx=20, pady=2)
+        self.button_dodo.pack(side=tk.LEFT, padx=20, pady=2)
+        self.button_calza.pack(side=tk.LEFT, padx=20, pady=2)
 
         # ----- Socket -----
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
