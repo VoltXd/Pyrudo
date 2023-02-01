@@ -53,18 +53,27 @@ class PyrudoReferee:
 
     def check_dodo(self, current_bid, current_player, last_player):
         count = self.count_dices(current_bid[1])
+        loosing_player = -1
 
        # Checks who loses the round
         if count < current_bid[0]:
             status = self.players[last_player].lose_round()
+            if status == "Dead":
+                loosing_player = self.next_player(last_player)
+            else:
+                loosing_player = last_player
             self.check_status(status, last_player)
             self.end_round_message(current_player, current_bid, count, True)
         else:
             status = self.players[current_player].lose_round()
+            if status == "Dead":
+                loosing_player = self.next_player(current_player)
+            else:
+                loosing_player = current_player
             self.check_status(status, current_player)
             self.end_round_message(current_player, current_bid, count, False)
         self.is_round_finished = True
-        return
+        return loosing_player
 
     def check_calza(self, current_bid, current_player):
         count = self.count_dices(current_bid[1])
@@ -124,16 +133,19 @@ class PyrudoReferee:
             return False, False, False
 
     def check_action(self, action, bid, current_player, last_player):
+        next_round_starting_player = -1
         if action == "Overbid":
             self.current_bid = bid
             for i in range(len(self.players)):
                 self.players[i].send_message(
                     "Nouvelle enchère : " + str(self.current_bid))
         elif action == "Dodo":
-            self.check_dodo(self.current_bid, current_player, last_player)
+            next_round_starting_player = self.check_dodo(
+                self.current_bid, current_player, last_player)
         elif action == "Calza":
             self.check_calza(self.current_bid, current_player)
-        return
+            next_round_starting_player = current_player
+        return next_round_starting_player
 
     def end_round_message(self, current_player, bid, count, has_won):
         if has_won:
@@ -169,11 +181,13 @@ class PyrudoReferee:
             self.players[i].send_update(
                 "Le joueur {} a gagné cette partie de Pyrudo ! Il lui restait {} dé(s) !".format(winner, self.players[winner].number_of_dices))
         time.sleep(0.5)
+        for i in range(len(self.players)):
+            self.players[i].send_update("END")
         return
 
-    def play_round(self):
+    def play_round(self, starting_player_index):
         # Initializes the next round
-        current_player_index = random.choice(self.players_alive)
+        current_player_index = starting_player_index
         self.current_bid = (0, 0)
         self.is_round_finished = False
         self.is_palifico = False
@@ -197,12 +211,13 @@ class PyrudoReferee:
                 received_message = received_message.split(":")
                 is_message_correct, new_bid, action = self.check_message(
                     received_message, current_player_index, bid_number)
-            self.check_action(
+            next_round_starting_player = self.check_action(
                 action, new_bid, current_player_index, last_player_index)
             last_player_index = current_player_index
             if not self.is_round_finished:
                 current_player_index = self.next_player(current_player_index)
-        return
+
+        return next_round_starting_player
 
     def play_game(self) -> None:
         # Initializes players and variables
@@ -220,12 +235,13 @@ class PyrudoReferee:
         for i in [x for x in range(len(self.players))]:
             self.players[i].send_message(texte)
 
+        starting_player_index = random.choice(self.players_alive)
+
         # Starts the game, run until game is finished
         while not is_game_finished:
 
             # Start a round, run until round is finished
-
-            self.play_round()
+            starting_player_index = self.play_round(starting_player_index)
 
             is_game_finished = (len(self.players_alive) == 1)
         self.end_game_message()

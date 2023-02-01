@@ -8,7 +8,6 @@ server_socket.connect(server_address)
 # Wait & print message (for testing purpose)
 
 game_running = True
-is_full_message = False
 
 while game_running :
     msg = server_socket.recv(4096).decode("utf-8")
@@ -20,6 +19,8 @@ while game_running :
             if client_input == "":
                 client_input = "d"
             server_socket.send(client_input.encode("utf-8"))
+        elif message == "Update: END":
+            game_running = False
 
 
 # End connection

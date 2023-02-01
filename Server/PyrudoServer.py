@@ -35,12 +35,13 @@ while (elapsed_time < CONNECTION_TIMEOUT and number_of_players < MAX_PLAYERS):
         client.send(waiting_message.encode("utf-8"))
     print(elapsed_time)
 
-pyrudo_referee = PyrudoReferee.PyrudoReferee(server_socket, players)
+if len(players) > 0:    
+    pyrudo_referee = PyrudoReferee.PyrudoReferee(server_socket, players)
 
-pyrudo_referee.play_game()
+    pyrudo_referee.play_game()
 
-for client in players:
-    client.close()
+    for client in players:
+        client.close()
 
 server_socket.close()
 # For testing puspose only
