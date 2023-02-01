@@ -41,7 +41,7 @@ while (elapsed_time < CONNECTION_TIMEOUT and number_of_players < MAX_PLAYERS):
         pass
     end = time.time()
     elapsed_time = end - start
-    server_socket.settimeout(CONNECTION_TIMEOUT - elapsed_time)
+    server_socket.settimeout(max(CONNECTION_TIMEOUT - elapsed_time,0))
     waiting_message = "En attente de connexion... Actuellement {} joueur(s) connecté(s)... {} seconde(s) restante(s)".format(
         len(players), int(CONNECTION_TIMEOUT-elapsed_time))
     for client in players:
