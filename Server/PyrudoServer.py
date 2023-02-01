@@ -33,6 +33,7 @@ print("En attente d'une première connexion...")
 while (elapsed_time < CONNECTION_TIMEOUT and number_of_players < MAX_PLAYERS):
     try:
         client_socket, adrr = server_socket.accept()
+        client_socket.send("CONNECTED TO PYRUDO".encode("utf-8"))
         players.append(client_socket)
         if number_of_players == 0:
             start = time.time()
