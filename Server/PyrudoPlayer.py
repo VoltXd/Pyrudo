@@ -19,11 +19,13 @@ class PyrudoPlayer:
         return string
 
     def reset(self) -> None:
+        #Reset the changing attributes of the player
         self.number_of_dices = 5
         self.is_palifico_done = False
         return
 
     def dice_roll(self) -> None:
+        #Rolls the dice for the player and prints the result
         for i in range(0, 6):
             self.dices[i] = 0
         for dice in range(self.number_of_dices):

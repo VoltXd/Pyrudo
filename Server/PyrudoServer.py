@@ -26,10 +26,11 @@ elif os.name == "posix":
     os.system("clear")
 else:
     print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
-    
+
 print("******** Serveur Pyrudo ********")
 print("En attente d'une première connexion...")
 
+# The game doesn't start until the server has been waiting for a minute or if players can still join
 while (elapsed_time < CONNECTION_TIMEOUT and number_of_players < MAX_PLAYERS):
     try:
         client_socket, adrr = server_socket.accept()
@@ -41,29 +42,24 @@ while (elapsed_time < CONNECTION_TIMEOUT and number_of_players < MAX_PLAYERS):
         pass
     end = time.time()
     elapsed_time = end - start
-    server_socket.settimeout(max(CONNECTION_TIMEOUT - elapsed_time,0))
+    # New socket will have a connection timeout of the remaining connexion time
+    server_socket.settimeout(max(CONNECTION_TIMEOUT - elapsed_time, 0))
+    # Waiting message for waiting players to keep them busy
     waiting_message = "En attente de connexion... Actuellement {} joueur(s) connecté(s)... {} seconde(s) restante(s)".format(
         len(players), int(CONNECTION_TIMEOUT-elapsed_time))
     for client in players:
         client.send(waiting_message.encode("utf-8"))
     print(elapsed_time)
 
-if len(players) > 0:    
+# A game will start only if player(s) have joined
+if len(players) > 0:
     pyrudo_referee = PyrudoReferee.PyrudoReferee(server_socket, players)
 
     pyrudo_referee.play_game()
 
+    # Closing of the players sockets at the end of the game
     for client in players:
         client.close()
 
+#Closing of the server socket at the end of the game
 server_socket.close()
-# For testing puspose only
-# s1, a1 = server_socket.accept()
-# s2, a2 = server_socket.accept()
-
-# pyrudo_referee = PyrudoReferee.PyrudoReferee(server_socket, [s1, s2])
-
-
-# Closing the socket
-# s1.close()
-# s2.close()
