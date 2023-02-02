@@ -3,8 +3,8 @@ import PyrudoReferee
 import time
 import os
 
-CONNECTION_TIMEOUT = 60
-MAX_PLAYERS = 6
+CONNECTION_TIMEOUT = 10
+MAX_PLAYERS = 5
 
 number_of_players = 0
 players = []
@@ -33,6 +33,7 @@ print("En attente d'une première connexion...")
 while (elapsed_time < CONNECTION_TIMEOUT and number_of_players < MAX_PLAYERS):
     try:
         client_socket, adrr = server_socket.accept()
+        client_socket.send("CONNECTED TO PYRUDO".encode("utf-8"))
         players.append(client_socket)
         if number_of_players == 0:
             start = time.time()
@@ -41,7 +42,10 @@ while (elapsed_time < CONNECTION_TIMEOUT and number_of_players < MAX_PLAYERS):
         pass
     end = time.time()
     elapsed_time = end - start
-    server_socket.settimeout(CONNECTION_TIMEOUT - elapsed_time)
+    if CONNECTION_TIMEOUT - elapsed_time < 0:
+        server_socket.settimeout(None)
+    else:
+        server_socket.settimeout(CONNECTION_TIMEOUT - elapsed_time)
     waiting_message = "En attente de connexion... Actuellement {} joueur(s) connecté(s)... {} seconde(s) restante(s)".format(
         len(players), int(CONNECTION_TIMEOUT-elapsed_time))
     for client in players:
